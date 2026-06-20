@@ -6,32 +6,33 @@ Scrapes all posts from the Lean Startup Circle Egypt Facebook group and saves th
 
 1. **Install dependencies:**
 ```bash
-pip3 install seleniumbase
+pip install seleniumbase
 ```
 
-2. **Login to Facebook:**
-   - Run the scraper once
-   - Login to Facebook in the browser window that opens
-   - The scraper will save your login session
+2. **First run — Login:**
+   - Run the scraper for the first time
+   - It will prompt you for your Facebook email/phone and password in the terminal
+   - Your password input is hidden (secure, like `sudo`)
+   - After successful login, your session cookies are saved to `fb_cookies.pkl`
+   - **Your credentials are never stored in the code** — only session cookies are saved locally
+
+3. **Subsequent runs:**
+   - The scraper automatically loads saved cookies to restore your session
+   - You only need to log in again if the session expires (typically after weeks/months)
+   - If cookies expire, it will prompt you again
 
 ## Usage
 
-### Method 1: Double-click the command file
-Simply double-click `Start_LeanStartup_Scraper.command` on your Desktop
-
-### Method 2: Run from Terminal
 ```bash
-cd /Users/admin/Desktop/se3rahakam/car-scraper-automation
-source venv/bin/activate
-python /Users/admin/Desktop/LeanStartup_Group_Scraper/scrape_group_posts.py
+python scrape_group_posts.py
 ```
 
 ## Configuration
 
 Edit `scrape_group_posts.py` to adjust:
 
-- `MAX_POSTS_PER_FILE` (default: 1000) - Posts per JSON file
-- `MAX_SCROLL_ITERATIONS` (default: 500) - Maximum scroll attempts
+- `MAX_POSTS_PER_FILE` (default: 30) - Posts per JSON file
+- `MAX_SCROLL_ITERATIONS` (default: 1000) - Maximum scroll attempts
 - `GROUP_URL` - Change to scrape a different group
 
 ## Output
@@ -59,30 +60,37 @@ Each post contains:
 ## Features
 
 - ✅ Undetected Chrome (avoids Facebook bot detection)
+- ✅ Persistent login via saved cookies (no need to log in every time)
+- ✅ Automatic login flow with credential prompt
+- ✅ Handles 2FA (waits for you to complete it in browser)
 - ✅ Expands truncated posts ("See More")
 - ✅ Clicks "Load More" buttons automatically
 - ✅ Human-like scrolling behavior
 - ✅ Duplicate detection
 - ✅ Saves to multiple JSON files (handles large datasets)
-- ✅ Continues from where it left off (via session)
+- ✅ Continues from where it left off (via session + seen-post tracking)
 - ✅ Detailed progress logging
 
-## Notes
+## Security & Privacy
 
-- The scraper is aggressive and will try to collect as many posts as possible
-- Facebook may rate-limit - if this happens, take a break and try again later
-- The scraper uses a persistent Chrome profile to maintain login sessions
-- Output files are UTF-8 encoded for Arabic text support
+- Your Facebook **password is never stored** — it's only used during login and not saved to disk
+- Session cookies are saved to `fb_cookies.pkl` (added to `.gitignore` so they're never committed)
+- The Chrome profile directory is also excluded from version control
+- All data stays on your local machine — nothing is sent to any external party
 
 ## Troubleshooting
 
 **Browser doesn't start:**
 - Close all other Chrome windows
-- Delete the `fb_group_scraper_profile` folder
-- Try again
+- Delete the `fb_group_scraper_profile` folder and try again
+
+**Login fails:**
+- Make sure you're entering the correct email and password
+- If you have 2FA enabled, complete it in the browser window when prompted
+- Delete `fb_cookies.pkl` and try again
 
 **No posts found:**
-- Make sure you're logged into Facebook
+- Make sure you're logged into Facebook (the scraper will prompt you)
 - Check if the group URL is correct
 - Ensure you have access to the group
 
@@ -90,30 +98,5 @@ Each post contains:
 - Increase `MAX_SCROLL_ITERATIONS` in the script
 - Facebook may have loaded all available posts
 
-## Example Output
-
-```json
-{
-  "scrape_info": {
-    "timestamp": "2026-04-11T10:30:45",
-    "group_url": "https://web.facebook.com/groups/LeanStartupCircleEgypt",
-    "total_posts_in_file": 1000,
-    "file_number": 1
-  },
-  "posts": [
-    {
-      "index": 0,
-      "text": "Full post text here...",
-      "author": "Author Name",
-      "timestamp": "Yesterday at 10:30 AM",
-      "url": "https://www.facebook.com/groups/LeanStartupCircleEgypt/posts/123456789",
-      "likes": "45",
-      "comments": "12",
-      "shares": "3",
-      "images": ["https://scontent..."],
-      "is_video": false,
-      "is_share": false
-    }
-  ]
-}
-```
+**Cookies expired:**
+- Delete `fb_cookies.pkl` to force a fresh login

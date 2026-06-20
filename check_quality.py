@@ -1,6 +1,8 @@
 import json, glob, os
+from pathlib import Path
 
-files = sorted(glob.glob("/Users/admin/Desktop/LeanStartup_Group_Scraper/output/lean_startup_posts_*.json"), key=os.path.getmtime)
+BASE_DIR = Path(__file__).parent
+files = sorted(glob.glob(str(BASE_DIR / "output" / "lean_startup_posts_*.json")), key=os.path.getmtime)
 
 all_posts = []
 for f in files:

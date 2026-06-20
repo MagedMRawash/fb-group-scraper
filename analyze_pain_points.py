@@ -273,7 +273,9 @@ def main():
     """
     Main analysis function
     """
-    output_dir = '/Users/admin/Desktop/LeanStartup_Group_Scraper/output'
+    from pathlib import Path
+    base_dir = Path(__file__).parent
+    output_dir = str(base_dir / 'output')
 
     # Get all JSON files
     json_files = [f for f in os.listdir(output_dir) if f.startswith('lean_startup_posts') and f.endswith('.json')]
@@ -376,7 +378,7 @@ def main():
         'sample_posts': all_results[:20]  # Include sample posts
     }
 
-    output_file = '/Users/admin/Desktop/LeanStartup_Group_Scraper/pain_point_analysis_results.json'
+    output_file = str(base_dir / 'pain_point_analysis_results.json')
     with open(output_file, 'w', encoding='utf-8') as f:
         json.dump(output_data, f, ensure_ascii=False, indent=2)
 

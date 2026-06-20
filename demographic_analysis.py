@@ -1322,7 +1322,9 @@ class DemographicAnalyzer:
 
 def main():
     """Main execution function"""
-    output_dir = "/Users/admin/Desktop/LeanStartup_Group_Scraper/output"
+    from pathlib import Path
+    base_dir = Path(__file__).parent
+    output_dir = str(base_dir / "output")
 
     print("Starting Demographic & Market Readiness Analysis...")
     print("=" * 80)
@@ -1338,7 +1340,7 @@ def main():
     report = analyzer.generate_report()
 
     # Save to file
-    report_path = "/Users/admin/Desktop/LeanStartup_Group_Scraper/demographic_market_analysis_report.md"
+    report_path = str(base_dir / "demographic_market_analysis_report.md")
     with open(report_path, 'w', encoding='utf-8') as f:
         f.write(report)
 
