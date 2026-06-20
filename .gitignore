@@ -1,0 +1,25 @@
+# Sensitive files — Facebook cookies and login data
+fb_cookies.pkl
+
+# Chrome profile data (contains session data)
+fb_group_scraper_profile/
+
+# Scraped output data
+output/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environments
+venv/
+.venv/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
